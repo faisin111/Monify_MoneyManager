@@ -26,6 +26,7 @@ class _LoginState extends State<Login> {
   Future<void> loginCheck() async {
     final prefs = await SharedPreferences.getInstance();
     var user = await UserService.loginUser(_username.text, _password.text);
+    if (!mounted) return;
     if (user == null) {
       showSnackBar(
         context,
@@ -40,7 +41,6 @@ class _LoginState extends State<Login> {
       color: const Color.fromARGB(255, 57, 134, 60),
     );
     prefs.setString('username', _username.text);
-    prefs.setString('registerpassword', _password.text);
     prefs.setBool('isLogin', true);
     prefs.setString('current_uid', user.uid);
     Navigator.pushAndRemoveUntil(

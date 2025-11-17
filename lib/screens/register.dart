@@ -28,6 +28,7 @@ class _RegisterState extends State<Register> {
         _registerusername.text,
         _registerpassword.text,
       );
+      if (!mounted) return;
       if (result == null) {
         showSnackBar(
           context,
@@ -45,12 +46,14 @@ class _RegisterState extends State<Register> {
       }
     } else if (_registerpassword.text.length < 6 ||
         _confirmpassword.text.length < 6) {
+      if (!mounted) return;
       showSnackBar(
         context,
         text: 'Password must more than 6 characters',
         color: Colors.red,
       );
     } else {
+      if (!mounted) return;
       showSnackBar(context, text: "Don't match password", color: Colors.red);
     }
   }

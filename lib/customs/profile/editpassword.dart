@@ -13,10 +13,10 @@ class EditPass extends StatelessWidget {
       final prefs = await SharedPreferences.getInstance();
       if (editpassController.text.length >= 6 &&
           !editpassController.text.contains(' ')) {
-        prefs.setString('registerpassword', editpassController.text);
         String? uid = await prefs.getString('current_uid');
         if (uid == null) return;
         await UserService.updateUser(uid, password: editpassController.text);
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -36,6 +36,7 @@ class EditPass extends StatelessWidget {
           ),
         );
       } else if (editpassController.text.length < 6) {
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -55,6 +56,7 @@ class EditPass extends StatelessWidget {
           ),
         );
       } else {
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
