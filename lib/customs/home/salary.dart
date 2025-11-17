@@ -35,6 +35,8 @@ class _SalaryState extends State<Salary> {
     setState(() {
       sal = salary.get('yoursalary_$id') ?? 0.0;
     });
+    int sala=sal.toInt();
+    _salary.text=sala.toString();
   }
 
   @override

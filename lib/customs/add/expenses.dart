@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_manager/customs/add/expensedialogs/updateexpense.dart';
 import 'package:money_manager/models/expensescategory.dart';
 import 'package:money_manager/services/expenseservice.dart';
@@ -21,13 +20,13 @@ class _ExpensesState extends State<Expenses> {
   List<Expensescategory> _expenses = [];
   String? currentId;
   Future<void> _load() async {
-    final prefs=await SharedPreferences.getInstance();
-    String? id=prefs.getString('current_uid');
+    final prefs = await SharedPreferences.getInstance();
+    String? id = prefs.getString('current_uid');
     _expenses = await _expenceservices.getExpense(id);
     globalExpenseNotifier.value = await _expenceservices.getExpense(id);
     if (!mounted) return;
     setState(() {
-      currentId=id;
+      currentId = id;
     });
   }
 
@@ -102,20 +101,7 @@ class _ExpensesState extends State<Expenses> {
                                     );
                                   },
                                 );
-                                var expensese = await Hive.box('salary');
-                                expensese.put(
-                                  'expensese',
-                                  (double.tryParse(
-                                            expensese
-                                                .get(
-                                                  'expensese',
-                                                  defaultValue: '0',
-                                                )
-                                                .toString(),
-                                          ) ??
-                                          0.0) -
-                                      (double.tryParse(expensee.amount) ?? 0.0),
-                                );
+
                                 if (result == true) {
                                   await _load();
                                 }
@@ -125,20 +111,6 @@ class _ExpensesState extends State<Expenses> {
                             IconButton(
                               onPressed: () async {
                                 await _expenceservices.deleteExpense(index);
-                                var expensese = await Hive.box('salary');
-                                expensese.put(
-                                  'expensese',
-                                  (double.tryParse(
-                                            expensese
-                                                .get(
-                                                  'expensese',
-                                                  defaultValue: '0',
-                                                )
-                                                .toString(),
-                                          ) ??
-                                          0.0) -
-                                      (double.tryParse(expensee.amount) ?? 0.0),
-                                );
                                 _load();
                               },
                               icon: Icon(Icons.delete, color: Colors.grey),
@@ -262,29 +234,18 @@ class _ExpensesState extends State<Expenses> {
               ),
             ),
             TextButton(
-              onPressed: () async {
-                final newExpense = await Expensescategory(
+              onPressed: () {
+                final newExpense = Expensescategory(
                   catogary: _catogary.text,
                   date: _date.text,
                   amount: _amount.text,
-                  id:currentId,
+                  id: currentId,
                 );
                 _expenceservices.addExpense(newExpense);
                 _catogary.clear();
                 _date.clear();
-                var expensese = await Hive.box('salary');
-                expensese.put(
-                  'expensese',
-                  (double.tryParse(
-                            expensese
-                                .get('expensese', defaultValue: '0')
-                                .toString(),
-                          ) ??
-                          0.0) +
-                      (double.tryParse(_amount.text) ?? 0.0),
-                );
                 _amount.clear();
-
+                if (!context.mounted) return;
                 Navigator.pop(context);
                 _load();
               },

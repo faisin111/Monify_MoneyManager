@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_manager/customs/add/incomedialogs/updateincome.dart';
 import 'package:money_manager/models/incomecategory.dart';
 import 'package:money_manager/global.dart';
@@ -239,8 +238,8 @@ class _IncomeState extends State<Income> {
               ),
             ),
             TextButton(
-              onPressed: () async {
-                final newIncome = await Incomecategory(
+              onPressed: () {
+                final newIncome = Incomecategory(
                   category: _catogary.text,
                   date: _date.text,
                   amount: _amount.text,
@@ -249,6 +248,8 @@ class _IncomeState extends State<Income> {
                 _incomeservicee.addIncome(newIncome);
                 _catogary.clear();
                 _date.clear();
+                _amount.clear();
+                if (!context.mounted) return;
                 Navigator.pop(context);
                 _loadd();
               },

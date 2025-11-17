@@ -15,6 +15,7 @@ class EditName extends StatelessWidget {
        String? uid=await prefs.getString('current_uid');
        if(uid==null)return;
        await UserService.updateUser(uid,name: editNameController.text);
+       if(!context.mounted)return;
        ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
