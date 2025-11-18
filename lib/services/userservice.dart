@@ -30,7 +30,6 @@ class UserService {
 
       return true;
     } catch (e) {
-      print("Delete error: $e");
       return false;
     }
   }
