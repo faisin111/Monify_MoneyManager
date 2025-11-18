@@ -26,5 +26,6 @@ class ImageService {
     final result=_box.get("profile_image_$uuid",defaultValue: false);
     if(result==false)return false;
     await _box.delete('profile_image_$uuid');
+    return true;
   }
 }
