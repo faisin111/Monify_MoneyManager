@@ -15,7 +15,7 @@ class Incomeservice {
     return _incomeBox!.values.where((u) => u.id == uuid).toList();
   }
 
-  Future<double> getAllIncome(String uuid) async {
+  Future<double> getAllIncome(String? uuid) async {
     final list = _incomeBox!.values.where((u) => u.id == uuid).toList();
     double total = 0.0;
     for (var u in list) {

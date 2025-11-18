@@ -74,7 +74,7 @@ class _ExpensesState extends State<Expenses> {
                         title: Text(
                           "${expensee.catogary}",
                           style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),

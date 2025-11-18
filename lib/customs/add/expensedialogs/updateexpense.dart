@@ -22,13 +22,13 @@ class _ExpenseDialogState extends State<ExpenseDialog> {
   late TextEditingController amountController;
   final Expenseservice _expenseservice = Expenseservice();
 
- Future<void> getId()async{
-  final prefs=await SharedPreferences.getInstance();
-  String? id=prefs.getString('current_uid');
-  setState(() {
-    currentId=id;
-  });
- }
+  Future<void> getId() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? id = prefs.getString('current_uid');
+    setState(() {
+      currentId = id;
+    });
+  }
 
   @override
   void initState() {
@@ -36,6 +36,7 @@ class _ExpenseDialogState extends State<ExpenseDialog> {
     categoryController = TextEditingController(text: widget.expense.catogary);
     dateController = TextEditingController(text: widget.expense.date);
     amountController = TextEditingController(text: widget.expense.amount);
+    getId();
   }
 
   @override
@@ -124,19 +125,19 @@ class _ExpenseDialogState extends State<ExpenseDialog> {
               catogary: categoryController.text,
               date: dateController.text,
               amount: amountController.text,
-              id: currentId
+              id: currentId,
             );
-                var expensese = await Hive.box('salary');
-                expensese.put(
-                  'expensese',
-                  (double.tryParse(
-                            expensese
-                                .get('expensese', defaultValue: '0')
-                                .toString(),
-                          ) ??
-                          0.0) +
-                      (double.tryParse(amountController.text) ?? 0.0),
-                );
+            var expensese = await Hive.box('salary');
+            expensese.put(
+              'expensese',
+              (double.tryParse(
+                        expensese
+                            .get('expensese', defaultValue: '0')
+                            .toString(),
+                      ) ??
+                      0.0) +
+                  (double.tryParse(amountController.text) ?? 0.0),
+            );
             await _expenseservice.updateExpense(widget.index, updatedExpense);
 
             if (!mounted) return;

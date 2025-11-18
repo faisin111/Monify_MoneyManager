@@ -35,6 +35,7 @@ class _IncomeDialogState extends State<IncomeDialog> {
     categoryController = TextEditingController(text: widget.income.category);
     dateController = TextEditingController(text: widget.income.date);
     amountController = TextEditingController(text: widget.income.amount);
+    getId();
   }
 
   @override
@@ -127,7 +128,7 @@ class _IncomeDialogState extends State<IncomeDialog> {
             );
             await _incomeService.updateIncome(widget.index, updatedIncome);
 
-            if (!mounted) return;
+            if (!context.mounted) return;
             Navigator.pop(context, true);
           },
           style: TextButton.styleFrom(backgroundColor: Colors.yellow),

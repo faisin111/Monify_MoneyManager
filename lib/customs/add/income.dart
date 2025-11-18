@@ -75,7 +75,7 @@ class _IncomeState extends State<Income> {
                         title: Text(
                           incomesss.category,
                           style: const TextStyle(
-                            fontSize: 25,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -100,9 +100,9 @@ class _IncomeState extends State<Income> {
                                     income: incomesss,
                                   ),
                                 );
-
                                 if (result == true) {
                                   await _loadd();
+                                  await _incomeservicee.getAllIncome(currentId);
                                 }
                               },
                               icon: const Icon(Icons.edit),
