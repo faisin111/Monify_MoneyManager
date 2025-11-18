@@ -102,7 +102,6 @@ class _IncomeState extends State<Income> {
                                 );
                                 if (result == true) {
                                   await _loadd();
-                                  await _incomeservicee.getAllIncome(currentId);
                                 }
                               },
                               icon: const Icon(Icons.edit),
