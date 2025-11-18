@@ -18,7 +18,6 @@ class _RegisterState extends State<Register> {
   final TextEditingController _confirmpassword = TextEditingController();
 
   Future<void> check() async {
-    final prefs = await SharedPreferences.getInstance();
     if (_confirmpassword.text == _registerpassword.text &&
         _registerpassword.text.length >= 6 &&
         _confirmpassword.text.length >= 6 &&
@@ -40,7 +39,6 @@ class _RegisterState extends State<Register> {
           MaterialPageRoute(builder: (context) => Login()),
           (route) => false,
         );
-        prefs.setBool('isRegister', true);
       } else {
         showSnackBar(context, text: result, color: Colors.red);
       }

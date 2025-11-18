@@ -27,7 +27,10 @@ class _SalaryState extends State<Salary> {
 
   Future<void> salary() async {
     var salary = await Hive.box('salary');
-    salary.put('yoursalary_$id', double.parse(_salary.text));
+    salary.put(
+      'yoursalary_$id',
+      double.parse(_salary.text == '' ? "0" : _salary.text),
+    );
   }
 
   Future<void> getSalary() async {
@@ -35,8 +38,8 @@ class _SalaryState extends State<Salary> {
     setState(() {
       sal = salary.get('yoursalary_$id') ?? 0.0;
     });
-    int sala=sal.toInt();
-    _salary.text=sala.toString();
+    int sala = sal.toInt();
+    _salary.text = sala.toString();
   }
 
   @override

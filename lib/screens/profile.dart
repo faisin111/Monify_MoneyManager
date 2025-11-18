@@ -28,7 +28,7 @@ class _ProfileState extends State<Profile> {
   Future<void> ass() async {
     final prefs = await SharedPreferences.getInstance();
     String? uid = prefs.getString('current_uid');
-     _imageFile = imageService.loadImage(uid);
+    _imageFile = imageService.loadImage(uid);
     setState(() {
       id = uid;
       name = prefs.getString('username') ?? 'User';
@@ -41,7 +41,12 @@ class _ProfileState extends State<Profile> {
   Future<void> logOut() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLogin', false);
-    if(!mounted)return;
+    if (!mounted) return;
+    showSnackBar(
+      context,
+      text: "Logout confirmed",
+      color: const Color.fromARGB(255, 57, 134, 60),
+    );
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => Login()),
@@ -52,7 +57,7 @@ class _ProfileState extends State<Profile> {
     final prefs = await SharedPreferences.getInstance();
     String? uid = prefs.getString('current_uid');
     bool success = await UserService.deleteAccount(uid);
-    if(!mounted)return;
+    if (!mounted) return;
     if (success) {
       showSnackBar(
         context,
@@ -178,15 +183,30 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Divider(color: const Color.fromARGB(255, 113, 113, 113)),
-                      Customtile(text: "Profile Dp",trailing: IconButton(onPressed: ()async{
-                      final result= await imageService.deleteImage(id);
-                      if(!context.mounted)return;
-                      if(result==false){
-                        showSnackBar(context, text: "Profile dp is null",color: Colors.red);
-                      }else{
-                       showSnackBar(context, text: "Successfully deleted",color:  const Color.fromARGB(255, 57, 134, 60));
-                       await ass();}
-                      }, icon: Icon(Icons.delete)),),
+                      Customtile(
+                        text: "Profile Dp",
+                        trailing: IconButton(
+                          onPressed: () async {
+                            final result = await imageService.deleteImage(id);
+                            if (!context.mounted) return;
+                            if (result == false) {
+                              showSnackBar(
+                                context,
+                                text: "Profile dp is null",
+                                color: Colors.red,
+                              );
+                            } else {
+                              showSnackBar(
+                                context,
+                                text: "Successfully deleted",
+                                color: const Color.fromARGB(255, 57, 134, 60),
+                              );
+                              await ass();
+                            }
+                          },
+                          icon: Icon(Icons.delete),
+                        ),
+                      ),
                       Divider(color: const Color.fromARGB(255, 113, 113, 113)),
                       ListTile(
                         leading: Text(
@@ -266,14 +286,14 @@ class _ProfileState extends State<Profile> {
               ),
               onPressed: () async {
                 final result = await imageService.pickImage(id);
-                if(!context.mounted)return;
+                if (!context.mounted) return;
                 if (result == null) {
                   showSnackBar(context, text: "Error", color: Colors.red);
                 } else {
                   showSnackBar(
                     context,
                     text: "Successfully Added",
-                    color:  const Color.fromARGB(255, 57, 134, 60),
+                    color: const Color.fromARGB(255, 57, 134, 60),
                   );
                   await ass();
                 }
