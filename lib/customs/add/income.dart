@@ -63,68 +63,70 @@ class _IncomeState extends State<Income> {
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(width: 1, color: Colors.yellow),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 0,
-                      vertical: 22,
-                    ),
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.arrow_upward,
-                        size: 30,
-                        color: Colors.green,
-                      ),
-                      title: Text(
-                        incomesss.category,
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: ListTile(
+                        leading: const Icon(
+                          Icons.arrow_upward,
+                          size: 30,
+                          color: Colors.green,
                         ),
-                      ),
-                      subtitle: Text(
-                        incomesss.date,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        title: Text(
+                          incomesss.category,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              final result = await showDialog(
-                                context: context,
-                                builder: (_) => IncomeDialog(
-                                  index: index,
-                                  income: incomesss,
-                                ),
-                              );
-
-                              if (result == true) {
-                                await _loadd();
-                              }
-                            },
-                            icon: const Icon(Icons.edit),
+                        subtitle: Text(
+                          incomesss.date,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
-                          IconButton(
-                            onPressed: () async {
-                              _incomeservicee.deleteIncome(index);
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                final result = await showDialog(
+                                  context: context,
+                                  builder: (_) => IncomeDialog(
+                                    index: index,
+                                    income: incomesss,
+                                  ),
+                                );
 
-                              _loadd();
-                            },
-                            icon: const Icon(Icons.delete, color: Colors.grey),
-                          ),
-                          Text(
-                            "\$+${double.parse(incomesss.amount)}",
-                            style: const TextStyle(
-                              fontSize: 17,
-                              color: Colors.green,
+                                if (result == true) {
+                                  await _loadd();
+                                }
+                              },
+                              icon: const Icon(Icons.edit),
                             ),
-                          ),
-                        ],
+                            IconButton(
+                              onPressed: () async {
+                                _incomeservicee.deleteIncome(index);
+
+                                _loadd();
+                              },
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Text(
+                              "\$+${double.parse(incomesss.amount)}",
+                              style: const TextStyle(
+                                fontSize: 17,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
