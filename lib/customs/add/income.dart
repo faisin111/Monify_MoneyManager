@@ -243,7 +243,7 @@ class _IncomeState extends State<Income> {
                 final newIncome = Incomecategory(
                   category: _catogary.text,
                   date: _date.text,
-                  amount: _amount.text,
+                  amount: _amount.text==''?'0':_amount.text,
                   id: currentId,
                 );
                 _incomeservicee.addIncome(newIncome);
