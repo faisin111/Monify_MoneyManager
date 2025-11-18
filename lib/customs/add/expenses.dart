@@ -23,7 +23,6 @@ class _ExpensesState extends State<Expenses> {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('current_uid');
     _expenses = await _expenceservices.getExpense(id);
-    globalExpenseNotifier.value = await _expenceservices.getExpense(id);
     if (!mounted) return;
     setState(() {
       currentId = id;

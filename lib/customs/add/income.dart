@@ -24,7 +24,6 @@ class _IncomeState extends State<Income> {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('current_uid');
     incomes = await _incomeservicee.getincome(id);
-    globalIncomeNotifier.value = await _incomeservicee.getincome(id);
     if (!mounted) return;
     setState(() {
       currentId = id;

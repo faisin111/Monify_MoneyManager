@@ -12,7 +12,6 @@ void main() async {
   await Hive.openBox<Expensescategory>('expenses_box');
   Hive.registerAdapter(IncomecategoryAdapter());
   await Hive.openBox<Incomecategory>('income_box');
-
   await Hive.openBox('salary');
   Hive.registerAdapter(UserModelAdapter());
   await Hive.openBox<UserModel>('user');
