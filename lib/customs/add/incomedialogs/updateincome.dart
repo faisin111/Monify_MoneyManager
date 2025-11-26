@@ -1,25 +1,25 @@
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:money_manager/riverpodservice/incomeprovider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '/models/incomecategory.dart';
-import '../../../services/incomeservice.dart';
+
 import 'package:flutter/material.dart';
 
-class IncomeDialog extends StatefulWidget {
+class IncomeDialog extends ConsumerStatefulWidget {
   final int index;
   final Incomecategory income;
 
   const IncomeDialog({super.key, required this.index, required this.income});
 
   @override
-  State<IncomeDialog> createState() => _IncomeDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _IncomeDialogState();
 }
 
-class _IncomeDialogState extends State<IncomeDialog> {
+class _IncomeDialogState extends ConsumerState<IncomeDialog> {
   String? currentId;
   late TextEditingController categoryController;
   late TextEditingController dateController;
   late TextEditingController amountController;
-  final Incomeservice _incomeService = Incomeservice();
   Future<void> getId() async {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('current_uid');
@@ -48,6 +48,9 @@ class _IncomeDialogState extends State<IncomeDialog> {
 
   @override
   Widget build(BuildContext context) {
+    if (currentId == null) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     return AlertDialog(
       title: const Center(
         child: Text(
@@ -126,7 +129,9 @@ class _IncomeDialogState extends State<IncomeDialog> {
               amount: amountController.text,
               id: currentId,
             );
-            await _incomeService.updateIncome(widget.index, updatedIncome);
+            await ref
+                .read(incomeProvider.notifier)
+                .updateExpense(widget.index, updatedIncome);
 
             if (!context.mounted) return;
             Navigator.pop(context, true);

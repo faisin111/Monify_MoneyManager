@@ -1,57 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_manager/customs/add/incomedialogs/updateincome.dart';
 import 'package:money_manager/models/incomecategory.dart';
-import 'package:money_manager/global.dart';
-import 'package:money_manager/services/incomeservice.dart';
+import 'package:money_manager/riverpodservice/incomeprovider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Income extends StatefulWidget {
+
+class Income extends ConsumerStatefulWidget {
   const Income({super.key});
 
   @override
-  State<Income> createState() => _IncomeState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _IncomeState();
 }
 
-class _IncomeState extends State<Income> {
+class _IncomeState extends ConsumerState<Income> {
   String? currentId;
   double superr = 0;
   final TextEditingController _catogary = TextEditingController();
   final TextEditingController _date = TextEditingController();
   final TextEditingController _amount = TextEditingController();
-  final Incomeservice _incomeservicee = Incomeservice();
-  List<Incomecategory> incomes = [];
   Future<void> _loadd() async {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('current_uid');
-    incomes = await _incomeservicee.getincome(id);
-    if (!mounted) return;
     setState(() {
       currentId = id;
     });
   }
 
-  Future<void> _initialize() async {
-    await _incomeservicee.openBox();
-    await _loadd();
-  }
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initialize();
-    });
+    _loadd();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (currentId == null) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    final income = ref.watch(filterIncome(currentId));
     return Scaffold(
       body: Stack(
         children: [
           ListView.builder(
-            itemCount: incomes.length,
+            itemCount: income.length,
             itemBuilder: (context, index) {
-              final incomesss = incomes[index];
+              final incomesss = income[index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(25, 15, 20, 0),
                 child: Container(
@@ -92,24 +86,22 @@ class _IncomeState extends State<Income> {
                           children: [
                             IconButton(
                               onPressed: () async {
-                                final result = await showDialog(
+                                 await showDialog(
                                   context: context,
                                   builder: (_) => IncomeDialog(
                                     index: index,
                                     income: incomesss,
                                   ),
                                 );
-                                if (result == true) {
-                                  await _loadd();
-                                }
+                             
                               },
                               icon: const Icon(Icons.edit),
                             ),
                             IconButton(
                               onPressed: () async {
-                                _incomeservicee.deleteIncome(index);
+                                ref.read(incomeProvider.notifier).deleteIncome(index);
 
-                                _loadd();
+                                
                               },
                               icon: const Icon(
                                 Icons.delete,
@@ -242,16 +234,16 @@ class _IncomeState extends State<Income> {
                 final newIncome = Incomecategory(
                   category: _catogary.text,
                   date: _date.text,
-                  amount: _amount.text==''?'0':_amount.text,
+                  amount: _amount.text == '' ? '0' : _amount.text,
                   id: currentId,
                 );
-                _incomeservicee.addIncome(newIncome);
+               ref.read(incomeProvider.notifier).addIncome(newIncome);
                 _catogary.clear();
                 _date.clear();
                 _amount.clear();
                 if (!context.mounted) return;
                 Navigator.pop(context);
-                _loadd();
+              
               },
               style: TextButton.styleFrom(backgroundColor: Colors.yellow),
               child: Text(

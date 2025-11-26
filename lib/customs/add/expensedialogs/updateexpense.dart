@@ -1,26 +1,23 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:money_manager/riverpodservice/expenseprovider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '/models/expensescategory.dart';
-import '../../../services/expenseservice.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/models/expensescategory.dart';
 
-class ExpenseDialog extends StatefulWidget {
+class ExpenseDialog extends ConsumerStatefulWidget {
   final int index;
   final Expensescategory expense;
-
   const ExpenseDialog({super.key, required this.index, required this.expense});
 
   @override
-  State<ExpenseDialog> createState() => _ExpenseDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ExpenseDialogState();
 }
 
-class _ExpenseDialogState extends State<ExpenseDialog> {
+class _ExpenseDialogState extends ConsumerState<ExpenseDialog> {
   String? currentId;
   late TextEditingController categoryController;
   late TextEditingController dateController;
   late TextEditingController amountController;
-  final Expenseservice _expenseservice = Expenseservice();
 
   Future<void> getId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -49,6 +46,9 @@ class _ExpenseDialogState extends State<ExpenseDialog> {
 
   @override
   Widget build(BuildContext context) {
+    if (currentId == null) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     return AlertDialog(
       title: const Center(
         child: Text(
@@ -127,20 +127,10 @@ class _ExpenseDialogState extends State<ExpenseDialog> {
               amount: amountController.text,
               id: currentId,
             );
-            var expensese = await Hive.box('salary');
-            expensese.put(
-              'expensese',
-              (double.tryParse(
-                        expensese
-                            .get('expensese', defaultValue: '0')
-                            .toString(),
-                      ) ??
-                      0.0) +
-                  (double.tryParse(amountController.text) ?? 0.0),
-            );
-            await _expenseservice.updateExpense(widget.index, updatedExpense);
 
-            if (!mounted) return;
+            await ref
+                .read(expenseProvider.notifier)
+                .updateExpense(widget.index, updatedExpense);
             Navigator.pop(context, true);
           },
           style: TextButton.styleFrom(backgroundColor: Colors.yellow),

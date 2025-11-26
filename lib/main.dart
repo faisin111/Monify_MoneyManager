@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_manager/models/expensescategory.dart';
 import 'package:money_manager/models/incomecategory.dart';
@@ -15,7 +16,7 @@ void main() async {
   await Hive.openBox('salary');
   Hive.registerAdapter(UserModelAdapter());
   await Hive.openBox<UserModel>('user');
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

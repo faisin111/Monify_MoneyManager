@@ -1,23 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_manager/customs/flowchart/graph.dart';
-import 'package:money_manager/global.dart';
+import 'package:money_manager/riverpodservice/expenseprovider.dart';
+import 'package:money_manager/riverpodservice/incomeprovider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class FlowChart extends StatefulWidget {
+class FlowChart extends ConsumerStatefulWidget {
   const FlowChart({super.key});
 
   @override
-  State<FlowChart> createState() => _FlowChartState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _FlowchartState();
 }
 
-class _FlowChartState extends State<FlowChart> {
+class _FlowchartState extends ConsumerState<FlowChart> {
+  String? id;
+
+  Future<void> get() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? uid = prefs.getString('current_uid');
+    setState(() {
+      id = uid;
+    });
+  }
+
   @override
   void initState() {
-    setState(() {});
     super.initState();
+    get();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (id == null) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    final expensetotal = ref.watch(totalExpenseFromState(id));
+    final incometotal = ref.watch(totalIncome(id));
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -31,95 +49,87 @@ class _FlowChartState extends State<FlowChart> {
           ),
         ),
       ),
-      body: ValueListenableBuilder(
-        valueListenable: incomenotifier,
-        builder: (context, index, _) {
-          return Column(
-            children: [
-              SizedBox(height: 400, child: Graph()),
-              Container(
-                width: 300,
-                height: 250,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 0, 0, 0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Column(
+        children: [
+          SizedBox(height: 400, child: Graph()),
+          Container(
+            width: 300,
+            height: 250,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 0, 0, 0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 26,
-                          height: 26,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 54, 108, 244),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Text(
-                          'Savings',
-                          style: TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                    Container(
+                      width: 26,
+                      height: 26,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 54, 108, 244),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                     ),
+                    SizedBox(width: 20),
                     Text(
-                      '\$${incomenotifier.value - expensesnotifier.value <= 0 ? 0.0 : incomenotifier.value - expensesnotifier.value}',
+                      'Savings',
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 27,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text('Your savings is now', style: TextStyle(fontSize: 25)),
-                    Row(
-                      children: [
-                        Container(
-                          width: 26,
-                          height: 26,
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Text(
-                          'Income',
-                          style: TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                  ],
+                ),
+                Text(
+                  '\$${incometotal - expensetotal <= 0 ? 0.0 : incometotal - expensetotal}',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+                ),
+                Text('Your savings is now', style: TextStyle(fontSize: 25)),
+                Row(
+                  children: [
+                    Container(
+                      width: 26,
+                      height: 26,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 26,
-                          height: 26,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 222, 71, 104),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Text(
-                          'Expense',
-                          style: TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                    SizedBox(width: 20),
+                    Text(
+                      'Income',
+                      style: TextStyle(
+                        fontSize: 27,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          );
-        },
+                Row(
+                  children: [
+                    Container(
+                      width: 26,
+                      height: 26,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 222, 71, 104),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      'Expense',
+                      style: TextStyle(
+                        fontSize: 27,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

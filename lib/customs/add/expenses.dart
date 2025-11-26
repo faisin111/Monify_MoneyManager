@@ -1,56 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_manager/customs/add/expensedialogs/updateexpense.dart';
 import 'package:money_manager/models/expensescategory.dart';
-import 'package:money_manager/services/expenseservice.dart';
-import 'package:money_manager/global.dart';
+import 'package:money_manager/riverpodservice/expenseprovider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Expenses extends StatefulWidget {
+class Expenses extends ConsumerStatefulWidget {
   const Expenses({super.key});
 
   @override
-  State<Expenses> createState() => _ExpensesState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ExpensesState();
 }
 
-class _ExpensesState extends State<Expenses> {
+class _ExpensesState extends ConsumerState<Expenses> {
   final TextEditingController _catogary = TextEditingController();
   final TextEditingController _date = TextEditingController();
   final TextEditingController _amount = TextEditingController();
-  final Expenseservice _expenceservices = Expenseservice();
-  List<Expensescategory> _expenses = [];
   String? currentId;
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('current_uid');
-    _expenses = await _expenceservices.getExpense(id);
-    if (!mounted) return;
-    setState(() {
-      currentId = id;
-    });
+     setState(() {
+        currentId = id;
+     });
   }
 
-  Future<void> _initialize() async {
-    await _expenceservices.openBox();
-    await _load();
-  }
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initialize();
-    });
+    _load();
   }
 
   @override
   Widget build(BuildContext context) {
+    if(currentId==null){
+      return Scaffold(body: Center(child: CircularProgressIndicator(),),);
+    } 
+    final expenseget=ref.watch(filteredExpenses(currentId));
     return Scaffold(
       body: Stack(
         children: [
           ListView.builder(
-            itemCount: _expenses.length,
+            itemCount: expenseget.length,
             itemBuilder: (context, index) {
-              final expensee = _expenses[index];
+              final expensee = expenseget[index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(25, 15, 20, 0),
                 child: Container(
@@ -91,7 +85,7 @@ class _ExpensesState extends State<Expenses> {
                           children: [
                             IconButton(
                               onPressed: () async {
-                                final result = await showDialog(
+                                await showDialog(
                                   context: context,
                                   builder: (_) {
                                     return ExpenseDialog(
@@ -100,17 +94,14 @@ class _ExpensesState extends State<Expenses> {
                                     );
                                   },
                                 );
-
-                                if (result == true) {
-                                  await _load();
-                                }
                               },
                               icon: Icon(Icons.edit),
                             ),
                             IconButton(
                               onPressed: () async {
-                                await _expenceservices.deleteExpense(index);
-                                _load();
+                                await ref
+                                    .read(expenseProvider.notifier)
+                                    .deleteExpense(index);
                               },
                               icon: Icon(Icons.delete, color: Colors.grey),
                             ),
@@ -240,13 +231,12 @@ class _ExpensesState extends State<Expenses> {
                   amount: _amount.text,
                   id: currentId,
                 );
-                _expenceservices.addExpense(newExpense);
+                ref.read(expenseProvider.notifier).addExpense(newExpense);
                 _catogary.clear();
                 _date.clear();
                 _amount.clear();
                 if (!context.mounted) return;
                 Navigator.pop(context);
-                _load();
               },
 
               style: TextButton.styleFrom(backgroundColor: Colors.yellow),

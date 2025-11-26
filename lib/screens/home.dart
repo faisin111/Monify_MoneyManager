@@ -1,35 +1,32 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_manager/customs/home/expence.dart';
 import 'package:money_manager/customs/home/progile_icon.dart';
 import 'package:money_manager/customs/home/salary.dart';
 import 'package:money_manager/customs/profile/appinfo.dart';
 import 'package:money_manager/customs/register/custom_snackbar.dart';
+import 'package:money_manager/riverpodservice/expenseprovider.dart';
+import 'package:money_manager/riverpodservice/incomeprovider.dart';
 import 'package:money_manager/screens/login.dart';
-import 'package:money_manager/services/expenseservice.dart';
 import 'package:money_manager/services/image_services.dart';
-import 'package:money_manager/services/incomeservice.dart';
 import 'package:money_manager/services/userservice.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:money_manager/global.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends ConsumerState<Home> {
   final imageService = ImageService();
   File? _imageFile;
   String? id;
   String name = '';
   List<String> _name = [];
   String first = '';
-  final incomeservice = Incomeservice();
-  final expenseservice = Expenseservice();
   Future<void> acsess() async {
     final prefs = await SharedPreferences.getInstance();
     String? uid = prefs.getString('current_uid');
@@ -41,13 +38,7 @@ class _HomeState extends State<Home> {
       _name[0] = _name[0].toUpperCase();
       first = _name.join('');
     });
-    if (uid == null) return;
-    await incomeservice.openBox();
-    await expenseservice.openBox();
-    double totalexpense = await expenseservice.getTotalExpence(uid);
-    expensesnotifier.value = totalexpense;
-    double totalIncome = await incomeservice.getAllIncome(uid);
-    incomenotifier.value = totalIncome;
+
   }
 
   Future<void> deleteAccount() async {
@@ -88,6 +79,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    if (id == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    final expensetotal = ref.watch(totalExpenseFromState(id));
+    final incomeTotal = ref.watch(totalIncome(id));
     return Scaffold(
       backgroundColor: Colors.black,
       drawer: Drawer(
@@ -157,10 +153,10 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     onTap: () {
-                       Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AppInfo()),
-                          );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AppInfo()),
+                      );
                     },
                   ),
                   ListTile(
@@ -227,33 +223,28 @@ class _HomeState extends State<Home> {
                 topStart: Radius.circular(60),
               ),
             ),
-            child: ValueListenableBuilder(
-              valueListenable: incomenotifier,
-              builder: (context, index, _) {
-                return ListView(
-                  children: [
-                    Expence(
-                      iconss: Icons.savings,
-                      tittle: 'Savings',
-                      trailing:
-                          '\$${incomenotifier.value - expensesnotifier.value <= 0 ? 0.0 : incomenotifier.value - expensesnotifier.value}',
-                      colortral: const Color.fromARGB(255, 54, 108, 244),
-                    ),
-                    Expence(
-                      iconss: Icons.money,
-                      tittle: 'Income',
-                      trailing: '\$${incomenotifier.value}',
-                      colortral: Colors.green,
-                    ),
-                    Expence(
-                      iconss: Icons.card_travel,
-                      tittle: 'Expense',
-                      trailing: '\$${expensesnotifier.value}',
-                      colortral: const Color.fromARGB(255, 222, 71, 104),
-                    ),
-                  ],
-                );
-              },
+            child: ListView(
+              children: [
+                Expence(
+                  iconss: Icons.savings,
+                  tittle: 'Savings',
+                  trailing:
+                      '\$${incomeTotal - expensetotal <= 0 ? 0.0 : incomeTotal - expensetotal}',
+                  colortral: const Color.fromARGB(255, 54, 108, 244),
+                ),
+                Expence(
+                  iconss: Icons.money,
+                  tittle: 'Income',
+                  trailing: '\$$incomeTotal',
+                  colortral: Colors.green,
+                ),
+                Expence(
+                  iconss: Icons.card_travel,
+                  tittle: 'Expense',
+                  trailing: '\$$expensetotal',
+                  colortral: const Color.fromARGB(255, 222, 71, 104),
+                ),
+              ],
             ),
           ),
         ],

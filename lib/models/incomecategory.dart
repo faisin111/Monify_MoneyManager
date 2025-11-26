@@ -1,19 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 part 'incomecategory.g.dart';
+
 @HiveType(typeId: 1)
+@immutable
 class Incomecategory {
   @HiveField(0)
-  String category;
+  final String category;
   @HiveField(1)
-  String date;
+  final String date;
   @HiveField(2)
-  String amount;
+  final String amount;
   @HiveField(3)
-  String? id;
-  Incomecategory({
+  final String? id;
+  const Incomecategory({
     required this.category,
     required this.date,
     required this.amount,
-    required this.id
+    required this.id,
   });
 }
