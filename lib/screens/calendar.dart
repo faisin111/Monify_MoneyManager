@@ -50,14 +50,17 @@ class _CalendarState extends State<Calendar> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Container(
-               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(width: 1, color: Colors.yellow),
-                ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(width: 1, color: Colors.yellow),
+              ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical:10, horizontal: 10),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 10,
+                ),
                 child: TableCalendar(
                   locale: 'en_US',
                   rowHeight: 56,

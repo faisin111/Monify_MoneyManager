@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/customs/add/expenses.dart';
-import 'package:money_manager/customs/add/income.dart';
-import 'package:money_manager/customs/add/savings.dart';
+import 'package:money_manager/custom_widgets/add/expenses.dart';
+import 'package:money_manager/custom_widgets/add/income.dart';
+import 'package:money_manager/custom_widgets/add/savings.dart';
 
 class Add extends StatefulWidget {
   const Add({super.key});

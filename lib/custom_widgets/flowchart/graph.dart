@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_manager/riverpodservice/expenseprovider.dart';
-import 'package:money_manager/riverpodservice/incomeprovider.dart';
+import 'package:money_manager/providers/expense_providers.dart';
+import 'package:money_manager/providers/income_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Graph extends ConsumerStatefulWidget {
@@ -33,8 +33,8 @@ class _GraphState extends ConsumerState<Graph> {
     if (currentid == null) {
       return Center(child: CircularProgressIndicator());
     }
-    final expensetotal = ref.watch(totalExpenseFromState(currentid));
-    final incomeTotal = ref.watch(totalIncome(currentid));
+    final expensetotal = ref.watch(totalFilteredExpense(currentid));
+    final incomeTotal = ref.watch(totalFilteredIncome(currentid));
     return PieChart(
       PieChartData(
         sections: [

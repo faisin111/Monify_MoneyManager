@@ -21,7 +21,7 @@ class _BottomAppState extends State<BottomApp> {
       extendBody: true,
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric( horizontal: 80),
+          padding: const EdgeInsets.symmetric(horizontal: 80),
           child: Container(
             height: 70,
             decoration: BoxDecoration(

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_manager/customs/add/incomedialogs/updateincome.dart';
+import 'package:money_manager/custom_widgets/add/incomedialogs/updateincome.dart';
 import 'package:money_manager/models/incomecategory.dart';
-import 'package:money_manager/riverpodservice/incomeprovider.dart';
+import 'package:money_manager/providers/income_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class Income extends ConsumerStatefulWidget {
   const Income({super.key});
@@ -86,22 +85,21 @@ class _IncomeState extends ConsumerState<Income> {
                           children: [
                             IconButton(
                               onPressed: () async {
-                                 await showDialog(
+                                await showDialog(
                                   context: context,
                                   builder: (_) => IncomeDialog(
                                     index: index,
                                     income: incomesss,
                                   ),
                                 );
-                             
                               },
                               icon: const Icon(Icons.edit),
                             ),
                             IconButton(
                               onPressed: () async {
-                                ref.read(incomeProvider.notifier).deleteIncome(index);
-
-                                
+                                ref
+                                    .read(incomeProvider.notifier)
+                                    .deleteIncomeNotifier(index);
                               },
                               icon: const Icon(
                                 Icons.delete,
@@ -237,13 +235,12 @@ class _IncomeState extends ConsumerState<Income> {
                   amount: _amount.text == '' ? '0' : _amount.text,
                   id: currentId,
                 );
-               ref.read(incomeProvider.notifier).addIncome(newIncome);
+                ref.read(incomeProvider.notifier).addIncomeNotifier(newIncome);
                 _catogary.clear();
                 _date.clear();
                 _amount.clear();
                 if (!context.mounted) return;
                 Navigator.pop(context);
-              
               },
               style: TextButton.styleFrom(backgroundColor: Colors.yellow),
               child: Text(

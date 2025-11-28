@@ -41,7 +41,11 @@ class Expence extends StatelessWidget {
             ),
             trailing: Text(
               trailing,
-              style: TextStyle(fontSize: 23, color: colortral,fontWeight: FontWeight.w700),
+              style: TextStyle(
+                fontSize: 23,
+                color: colortral,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),

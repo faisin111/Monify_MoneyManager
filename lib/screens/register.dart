@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/customs/register/custom_snackbar.dart';
+import 'package:money_manager/custom_widgets/register/custom_snackbar.dart';
 import 'package:money_manager/screens/login.dart';
-import 'package:money_manager/services/userservice.dart';
+import 'package:money_manager/service/user_service.dart';
 import 'package:flutter/gestures.dart';
 
 class Register extends StatefulWidget {

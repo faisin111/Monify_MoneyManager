@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/customs/add/customlisttile.dart';
-import 'package:money_manager/riverpodservice/incomeprovider.dart';
+import 'package:money_manager/custom_widgets/add/customlisttile.dart';
+import 'package:money_manager/providers/expense_providers.dart';
+import 'package:money_manager/providers/income_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:money_manager/riverpodservice/expenseprovider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Savings extends ConsumerStatefulWidget {
@@ -33,8 +33,8 @@ class _SavingsState extends ConsumerState<Savings> {
     if (id == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    final expensetotal = ref.watch(totalExpenseFromState(id));
-    final incomeTotal = ref.watch(totalIncome(id));
+    final expensetotal = ref.watch(totalFilteredExpense(id));
+    final incomeTotal = ref.watch(totalFilteredIncome(id));
     return Scaffold(
       body: Stack(
         children: [
@@ -77,7 +77,8 @@ class _SavingsState extends ConsumerState<Savings> {
                               Divider(color: Colors.yellow),
                               CustomListtile(
                                 leading: 'Savings',
-                                values: '\$${incomeTotal-expensetotal<=0?0.0:incomeTotal-expensetotal}',
+                                values:
+                                    '\$${incomeTotal - expensetotal <= 0 ? 0.0 : incomeTotal - expensetotal}',
                               ),
                             ],
                           ),

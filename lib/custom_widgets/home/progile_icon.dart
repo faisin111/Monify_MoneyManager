@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:money_manager/services/image_services.dart';
+import 'package:money_manager/service/image_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomprofileIcon extends StatefulWidget {

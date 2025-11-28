@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:money_manager/customs/register/custom_snackbar.dart';
+import 'package:money_manager/custom_widgets/register/custom_snackbar.dart';
 import 'package:money_manager/screens/bottomnav.dart';
 import 'package:money_manager/screens/register.dart';
-import 'package:money_manager/services/userservice.dart';
+import 'package:money_manager/service/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/gestures.dart';
 

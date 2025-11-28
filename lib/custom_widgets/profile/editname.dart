@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/services/userservice.dart';
+import 'package:money_manager/service/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class EditPass extends StatelessWidget {
-  const EditPass({super.key});
+class EditName extends StatelessWidget {
+  const EditName({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController editpassController = TextEditingController();
-
-    Future<void> editPassword() async {
+    final TextEditingController editNameController = TextEditingController();
+    Future<void> editName() async {
       final prefs = await SharedPreferences.getInstance();
-      if (editpassController.text.length >= 6 &&
-          !editpassController.text.contains(' ')) {
+      if (!editNameController.text.contains(' ')) {
+        prefs.setString('username', editNameController.text);
         String? uid = await prefs.getString('current_uid');
         if (uid == null) return;
-        await UserService.updateUser(uid, password: editpassController.text);
+        await UserService.updateUser(uid, name: editNameController.text);
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -35,32 +34,11 @@ class EditPass extends StatelessWidget {
             ),
           ),
         );
-      } else if (editpassController.text.length < 6) {
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "Password must more than 6 characters",
-              style: TextStyle(
-                fontSize: 19,
-                color: const Color.fromARGB(255, 255, 255, 255),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.all(20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-        );
       } else {
-        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              "password contain space",
+              "Don't Contains Spaces",
               style: TextStyle(
                 fontSize: 19,
                 color: const Color.fromARGB(255, 255, 255, 255),
@@ -81,17 +59,17 @@ class EditPass extends StatelessWidget {
     return AlertDialog(
       title: Center(
         child: Text(
-          "Edit Password",
+          "Edit Name",
           style: TextStyle(fontWeight: FontWeight.w500, color: Colors.yellow),
         ),
       ),
       content: Container(
         height: 60,
         child: TextField(
-          controller: editpassController,
+          controller: editNameController,
           decoration: InputDecoration(
             hint: Text(
-              'enter password',
+              'enter name',
               style: TextStyle(color: const Color.fromARGB(255, 152, 152, 152)),
             ),
             filled: true,
@@ -120,7 +98,7 @@ class EditPass extends StatelessWidget {
         ),
         TextButton(
           onPressed: () async {
-            editPassword();
+            editName();
             Navigator.pop(context);
           },
 

@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_manager/customs/home/expence.dart';
-import 'package:money_manager/customs/home/progile_icon.dart';
-import 'package:money_manager/customs/home/salary.dart';
-import 'package:money_manager/customs/profile/appinfo.dart';
-import 'package:money_manager/customs/register/custom_snackbar.dart';
-import 'package:money_manager/riverpodservice/expenseprovider.dart';
-import 'package:money_manager/riverpodservice/incomeprovider.dart';
+import 'package:money_manager/custom_widgets/home/expence.dart';
+import 'package:money_manager/custom_widgets/home/progile_icon.dart';
+import 'package:money_manager/custom_widgets/home/salary.dart';
+import 'package:money_manager/custom_widgets/profile/appinfo.dart';
+import 'package:money_manager/custom_widgets/register/custom_snackbar.dart';
+import 'package:money_manager/providers/expense_providers.dart';
+import 'package:money_manager/providers/income_provider.dart';
 import 'package:money_manager/screens/login.dart';
-import 'package:money_manager/services/image_services.dart';
-import 'package:money_manager/services/userservice.dart';
+import 'package:money_manager/service/image_services.dart';
+import 'package:money_manager/service/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends ConsumerStatefulWidget {
@@ -38,7 +38,6 @@ class _HomeState extends ConsumerState<Home> {
       _name[0] = _name[0].toUpperCase();
       first = _name.join('');
     });
-
   }
 
   Future<void> deleteAccount() async {
@@ -82,8 +81,8 @@ class _HomeState extends ConsumerState<Home> {
     if (id == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    final expensetotal = ref.watch(totalExpenseFromState(id));
-    final incomeTotal = ref.watch(totalIncome(id));
+    final expensetotal = ref.watch(totalFilteredExpense(id));
+    final incomeTotal = ref.watch(totalFilteredIncome(id));
     return Scaffold(
       backgroundColor: Colors.black,
       drawer: Drawer(

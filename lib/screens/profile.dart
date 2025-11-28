@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:money_manager/customs/profile/appinfo.dart';
-import 'package:money_manager/customs/profile/customtile.dart';
-import 'package:money_manager/customs/profile/editname.dart';
-import 'package:money_manager/customs/profile/editpassword.dart';
-import 'package:money_manager/customs/register/custom_snackbar.dart';
+import 'package:money_manager/custom_widgets/profile/appinfo.dart';
+import 'package:money_manager/custom_widgets/profile/customtile.dart';
+import 'package:money_manager/custom_widgets/profile/editname.dart';
+import 'package:money_manager/custom_widgets/profile/editpassword.dart';
+import 'package:money_manager/custom_widgets/register/custom_snackbar.dart';
 import 'package:money_manager/screens/login.dart';
-import 'package:money_manager/services/image_services.dart';
-import 'package:money_manager/services/userservice.dart';
+import 'package:money_manager/service/image_services.dart';
+import 'package:money_manager/service/logout.dart';
+import 'package:money_manager/service/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
@@ -38,19 +39,8 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  Future<void> logOut() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLogin', false);
-    if (!mounted) return;
-    showSnackBar(
-      context,
-      text: "Logout confirmed",
-      color: const Color.fromARGB(255, 57, 134, 60),
-    );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => Login()),
-    );
+  Future<void> logOutt(BuildContext context) async {
+    await logOut(context);
   }
 
   Future<void> deleteAccount() async {
@@ -252,7 +242,7 @@ class _ProfileState extends State<Profile> {
                             TextButton.icon(
                               onPressed: () {
                                 setState(() {
-                                  logOut();
+                                  logOutt(context);
                                 });
                               },
                               icon: Icon(Icons.logout),

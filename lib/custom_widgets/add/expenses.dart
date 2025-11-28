@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_manager/customs/add/expensedialogs/updateexpense.dart';
+import 'package:money_manager/custom_widgets/add/expensedialogs/updateexpense.dart';
 import 'package:money_manager/models/expensescategory.dart';
-import 'package:money_manager/riverpodservice/expenseprovider.dart';
+import 'package:money_manager/providers/expense_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Expenses extends ConsumerStatefulWidget {
@@ -20,11 +20,10 @@ class _ExpensesState extends ConsumerState<Expenses> {
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('current_uid');
-     setState(() {
-        currentId = id;
-     });
+    setState(() {
+      currentId = id;
+    });
   }
-
 
   @override
   void initState() {
@@ -34,10 +33,10 @@ class _ExpensesState extends ConsumerState<Expenses> {
 
   @override
   Widget build(BuildContext context) {
-    if(currentId==null){
-      return Scaffold(body: Center(child: CircularProgressIndicator(),),);
-    } 
-    final expenseget=ref.watch(filteredExpenses(currentId));
+    if (currentId == null) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    final expenseget = ref.watch(filteredExpenses(currentId));
     return Scaffold(
       body: Stack(
         children: [
@@ -101,7 +100,7 @@ class _ExpensesState extends ConsumerState<Expenses> {
                               onPressed: () async {
                                 await ref
                                     .read(expenseProvider.notifier)
-                                    .deleteExpense(index);
+                                    .deleteExpenseNotifier(index);
                               },
                               icon: Icon(Icons.delete, color: Colors.grey),
                             ),
@@ -231,7 +230,9 @@ class _ExpensesState extends ConsumerState<Expenses> {
                   amount: _amount.text,
                   id: currentId,
                 );
-                ref.read(expenseProvider.notifier).addExpense(newExpense);
+                ref
+                    .read(expenseProvider.notifier)
+                    .addExpenseNotifier(newExpense);
                 _catogary.clear();
                 _date.clear();
                 _amount.clear();
