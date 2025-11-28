@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:money_manager/custom_widgets/profile/appinfo.dart';
 import 'package:money_manager/custom_widgets/profile/customtile.dart';
 import 'package:money_manager/custom_widgets/profile/editname.dart';
-import 'package:money_manager/custom_widgets/profile/editpassword.dart';
+import 'package:money_manager/custom_widgets/profile/edit_password.dart';
 import 'package:money_manager/custom_widgets/register/custom_snackbar.dart';
 import 'package:money_manager/screens/login.dart';
 import 'package:money_manager/service/image_services.dart';

@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-part 'usermodel.g.dart';
+part 'user_model.g.dart';
 @HiveType(typeId: 2)
 class UserModel{
   @HiveField(0)

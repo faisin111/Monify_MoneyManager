@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'expensescategory.dart';
+part of 'expenses_category.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

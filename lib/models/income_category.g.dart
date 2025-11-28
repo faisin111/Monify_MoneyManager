@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'incomecategory.dart';
+part of 'income_category.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

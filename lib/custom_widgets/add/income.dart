@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_manager/custom_widgets/add/incomedialogs/updateincome.dart';
-import 'package:money_manager/models/incomecategory.dart';
+import 'package:money_manager/custom_widgets/add/income_dialogs/update_income.dart';
+import 'package:money_manager/models/income_category.dart';
 import 'package:money_manager/providers/income_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -2,7 +2,7 @@ import 'package:money_manager/providers/expense_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/models/expensescategory.dart';
+import '../../../models/expenses_category.dart';
 
 class ExpenseDialog extends ConsumerStatefulWidget {
   final int index;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_manager/custom_widgets/flowchart/graph.dart';
+import 'package:money_manager/custom_widgets/flow_chart/graph.dart';
 import 'package:money_manager/providers/expense_providers.dart';
 import 'package:money_manager/providers/income_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

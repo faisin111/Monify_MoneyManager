@@ -1,25 +1,24 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_manager/providers/income_provider.dart';
+import 'package:money_manager/providers/expense_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '/models/incomecategory.dart';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../models/expenses_category.dart';
 
-class IncomeDialog extends ConsumerStatefulWidget {
+class ExpenseDialog extends ConsumerStatefulWidget {
   final int index;
-  final Incomecategory income;
-
-  const IncomeDialog({super.key, required this.index, required this.income});
+  final Expensescategory expense;
+  const ExpenseDialog({super.key, required this.index, required this.expense});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _IncomeDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ExpenseDialogState();
 }
 
-class _IncomeDialogState extends ConsumerState<IncomeDialog> {
+class _ExpenseDialogState extends ConsumerState<ExpenseDialog> {
   String? currentId;
   late TextEditingController categoryController;
   late TextEditingController dateController;
   late TextEditingController amountController;
+
   Future<void> getId() async {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('current_uid');
@@ -31,10 +30,9 @@ class _IncomeDialogState extends ConsumerState<IncomeDialog> {
   @override
   void initState() {
     super.initState();
-
-    categoryController = TextEditingController(text: widget.income.category);
-    dateController = TextEditingController(text: widget.income.date);
-    amountController = TextEditingController(text: widget.income.amount);
+    categoryController = TextEditingController(text: widget.expense.catogary);
+    dateController = TextEditingController(text: widget.expense.date);
+    amountController = TextEditingController(text: widget.expense.amount);
     getId();
   }
 
@@ -123,16 +121,16 @@ class _IncomeDialogState extends ConsumerState<IncomeDialog> {
         ),
         TextButton(
           onPressed: () async {
-            final updatedIncome = Incomecategory(
-              category: categoryController.text,
+            final updatedExpense = Expensescategory(
+              catogary: categoryController.text,
               date: dateController.text,
               amount: amountController.text,
               id: currentId,
             );
-            await ref
-                .read(incomeProvider.notifier)
-                .updateIncomeNotifier(widget.index, updatedIncome);
 
+            await ref
+                .read(expenseProvider.notifier)
+                .updateExpenseNotifier(widget.index, updatedExpense);
             if (!context.mounted) return;
             Navigator.pop(context, true);
           },

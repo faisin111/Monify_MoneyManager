@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:hive/hive.dart';
 import 'package:money_manager/controller/expense_controller.dart';
-import 'package:money_manager/models/expensescategory.dart';
+import 'package:money_manager/models/expenses_category.dart';
 
 final expenceBox = Provider<Box<Expensescategory>>((ref) {
   return Hive.box<Expensescategory>("expenses_box");

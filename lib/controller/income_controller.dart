@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_manager/models/incomecategory.dart';
+import 'package:money_manager/models/income_category.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class IncomeController extends StateNotifier<List<Incomecategory>> {

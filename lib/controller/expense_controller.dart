@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_manager/models/expensescategory.dart';
+import 'package:money_manager/models/expenses_category.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class ExpenseController extends StateNotifier<List<Expensescategory>> {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_manager/models/expensescategory.dart';
-import 'package:money_manager/models/incomecategory.dart';
-import 'package:money_manager/models/usermodel.dart';
+import 'package:money_manager/models/expenses_category.dart';
+import 'package:money_manager/models/income_category.dart';
+import 'package:money_manager/models/user_model.dart';
 import 'package:money_manager/screens/splash.dart';
 
 void main() async {

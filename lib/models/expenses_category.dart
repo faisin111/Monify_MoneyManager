@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-part 'expensescategory.g.dart';
+part 'expenses_category.g.dart';
 
 @HiveType(typeId: 0)
 @immutable

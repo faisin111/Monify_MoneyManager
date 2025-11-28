@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:money_manager/custom_widgets/add/expensedialogs/updateexpense.dart';
-import 'package:money_manager/models/expensescategory.dart';
+import 'package:money_manager/custom_widgets/add/expense_dialogs/update_expense.dart';
+import 'package:money_manager/models/expenses_category.dart';
 import 'package:money_manager/providers/expense_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

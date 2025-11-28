@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_manager/controller/income_controller.dart';
-import 'package:money_manager/models/incomecategory.dart';
+import 'package:money_manager/models/income_category.dart';
 
 final incomeBox = Provider<Box<Incomecategory>>((ref) {
   return Hive.box<Incomecategory>('income_box');
